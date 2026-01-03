@@ -1,4 +1,124 @@
 <div class="host-container">
-  <h1>Экран ведущего</h1>
-  <p>Управление игрой (в разработке)</p>
+  <h1>🎬 Экран ведущего</h1>
+
+  <div class="host-layout">
+    <!-- Левая часть: управление -->
+    <div class="control-section">
+      <div class="current-player-box card">
+        <h3>👤 Текущий игрок</h3>
+        <div *ngIf="currentPlayer" class="player-info">
+          <p class="player-name">{{ currentPlayer.name }}</p>
+          <p class="player-city">{{ currentPlayer.city }}</p>
+          <p class="player-questions">Осталось вопросов: {{ currentPlayer.questionCount }}</p>
+        </div>
+        <div *ngIf="!currentPlayer" class="no-selection">
+          <p>Нажмите кнопку вращения</p>
+        </div>
+        <button class="btn btn-secondary btn-sm" (click)="clearCurrentPlayer()">Сбросить</button>
+      </div>
+
+      <!-- Кнопка вращения -->
+      <button class="btn btn-primary btn-spin" 
+              (click)="spinWheel()" 
+              [disabled]="activePlayerIndices.length === 0">
+        🎲 Вращать барабан
+      </button>
+
+      <!-- Таймер -->
+      <div class="timer-box card">
+        <h3>⏱️ Таймер совещания (60 сек)</h3>
+        
+        <div class="timer-display" *ngIf="timerActive">
+          <div class="timer-time">{{ formatTime(timerRemaining) }}</div>
+          <div class="timer-bar-container">
+            <div class="timer-bar" [style.width.%]="getTimerPercentage()"></div>
+          </div>
+        </div>
+
+        <div class="timer-idle" *ngIf="!timerActive">
+          <p>Готово к старту</p>
+        </div>
+
+        <div class="timer-buttons">
+          <button class="btn btn-primary btn-sm" 
+                  (click)="startTimer()"
+                  [disabled]="timerActive">
+            ▶️ Старт
+          </button>
+          <button class="btn btn-outline btn-sm" 
+                  (click)="stopTimer()"
+                  [disabled]="!timerActive">
+            ⏹️ Стоп
+          </button>
+        </div>
+      </div>
+
+      <!-- Статистика активных игроков -->
+      <div class="active-players card">
+        <h3>⚡ Активные игроки ({{ activePlayerIndices.length }})</h3>
+        <div class="player-list">
+          <div *ngFor="let index of activePlayerIndices" class="player-item">
+            <span class="player-name-small">{{ players[index].name }}</span>
+            <span class="question-count">{{ players[index].questionCount }} вопр.</span>
+          </div>
+        </div>
+        <div *ngIf="activePlayerIndices.length === 0" class="no-active">
+          <p>Все вопросы закончились!</p>
+        </div>
+      </div>
+
+      <!-- Счёт -->
+      <div class="scores-box card">
+        <h3>📊 Счёт</h3>
+        <div class="score-row">
+          <div class="score-item knowledge">
+            <p class="score-label">Знатоки 🧠</p>
+            <p class="score-value">{{ knowledgeScore }}</p>
+            <button class="btn btn-primary btn-sm" (click)="addKnowledgeScore(-1)">-1</button>
+            <button class="btn btn-primary btn-sm" (click)="addKnowledgeScore(1)">+1</button>
+          </div>
+          <div class="score-item viewer">
+            <p class="score-label">Телезрители 📺</p>
+            <p class="score-value">{{ viewerScore }}</p>
+            <button class="btn btn-primary btn-sm" (click)="addViewerScore(-1)">-1</button>
+            <button class="btn btn-primary btn-sm" (click)="addViewerScore(1)">+1</button>
+          </div>
+        </div>
+        <button class="btn btn-outline btn-sm" (click)="resetScores()">Сбросить</button>
+      </div>
+    </div>
+
+    <!-- Правая часть: звуки и информация -->
+    <div class="right-section">
+      <!-- Звуки -->
+      <div class="sounds-section card">
+        <h3>🔊 Звуки</h3>
+        <div class="sounds-grid">
+          <button *ngFor="let track of soundTracks"
+                  class="sound-btn"
+                  [class.playing]="isSoundPlaying(track.key)"
+                  (click)="toggleSound(track.key)"
+                  title="Нажми чтобы включить/выключить">
+            {{ track.label }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Информация -->
+      <div class="info-section card">
+        <h3>ℹ️ Управление</h3>
+        <ol>
+          <li>Убедитесь, что все игроки добавили вопросы в настройках</li>
+          <li>Откройте "Экран игроков" на втором мониторе</li>
+          <li>Нажмите "Вращать барабан"</li>
+          <li>На экране игроков будет показано фото выбранного игрока</li>
+          <li>Выбранный игрок задаёт вопрос</li>
+          <li>Нажмите "Старт" для таймера совещания (60 секунд)</li>
+          <li>На экране игроков будет видна шкала времени</li>
+          <li>Остальные совещаются и дают ответ</li>
+          <li>Если правильно - очко знатокам, если нет - телезрителям</li>
+        </ol>
+      </div>
+    </div>
+  </div>
 </div>

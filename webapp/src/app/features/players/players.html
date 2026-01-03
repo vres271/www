@@ -1,4 +1,76 @@
 <div class="players-container">
-  <h1>Экран игроков</h1>
-  <p>Отображение для игроков (в разработке)</p>
+  <!-- Счёт в углах -->
+  <div class="score-top-left">
+    <div class="score-corner knowledge">
+      <span class="score-corner-label">Знатоки</span>
+      <span class="score-corner-value">{{ knowledgeScore }}</span>
+    </div>
+  </div>
+
+  <div class="score-top-right">
+    <div class="score-corner viewer">
+      <span class="score-corner-label">Телезрители</span>
+      <span class="score-corner-value">{{ viewerScore }}</span>
+    </div>
+  </div>
+
+  <!-- Таймер вверху по центру (если активен) -->
+  <div class="timer-display-center" *ngIf="timerActive">
+    <div class="timer-time-big">{{ formatTime(timerRemaining) }}</div>
+    <div class="timer-bar-big-container">
+      <div class="timer-bar-big" [style.width.%]="getTimerPercentage()"></div>
+    </div>
+  </div>
+
+  <!-- Если есть текущий игрок -->
+  <div *ngIf="currentPlayer" class="current-player-display">
+    <div class="player-card-large">
+      <h2>{{ currentPlayer.name }}</h2>
+      <p class="city">{{ currentPlayer.city }}</p>
+      
+      <div *ngIf="currentPlayerPhoto" class="photo-container">
+        <img [src]="currentPlayerPhoto" alt="Фото игрока" class="player-photo">
+      </div>
+      
+      <p class="status-text">Задаёт вопрос 📢</p>
+    </div>
+  </div>
+
+  <!-- Если нет текущего игрока -->
+  <div *ngIf="!currentPlayer" class="waiting-section">
+    <!-- Барабан -->
+    <div class="wheel-container">
+      <div class="wheel" [style.transform]="'rotate(' + wheelRotation + 'deg)'">
+        <div *ngFor="let index of activePlayerIndices; let i = index" 
+             class="wheel-segment" 
+             [style.transform]="'rotate(' + (i * (360 / activePlayerIndices.length)) + 'deg)'">
+          <div class="segment-content">
+            <span class="segment-label">{{ players[index].name }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="wheel-pointer"></div>
+      <div class="wheel-center">
+        <span class="center-text">?</span>
+      </div>
+    </div>
+
+    <!-- Информация внизу -->
+    <div class="waiting-info">
+      <p class="player-count">🎮 Активные: {{ activePlayerIndices.length }}</p>
+    </div>
+  </div>
+
+  <!-- Все игроки с количеством вопросов -->
+  <div class="all-players-section" *ngIf="!currentPlayer">
+    <div class="players-grid">
+      <div *ngFor="let player of players" 
+           class="player-status-card"
+           [class.has-questions]="player.questionCount > 0"
+           [class.no-questions]="player.questionCount === 0">
+        <p class="player-status-name">{{ player.name }}</p>
+        <p class="question-status">{{ player.questionCount }}</p>
+      </div>
+    </div>
+  </div>
 </div>

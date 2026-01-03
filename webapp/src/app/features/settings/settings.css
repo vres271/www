@@ -40,20 +40,27 @@
   padding: 0.5rem;
 }
 
+/* Превью фото */
 .photos-preview-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 1rem;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0;
 }
 
 .photo-preview-item {
   position: relative;
+  width: 100px;
+  height: 100px;
   border-radius: var(--radius-md);
   overflow: hidden;
-  border: 2px solid var(--accent-gold);
-  aspect-ratio: 1;
+  border: 2px solid var(--border-color);
+  transition: all var(--duration-fast);
+}
+
+.photo-preview-item:hover {
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
 }
 
 .photo-preview-item img {
@@ -64,87 +71,59 @@
 
 .btn-remove-preview {
   position: absolute;
-  top: 4px;
-  right: 4px;
-  background-color: var(--accent-red);
-  color: white;
-  border: none;
+  top: 2px;
+  right: 2px;
   width: 24px;
   height: 24px;
-  border-radius: 50%;
+  padding: 0;
+  background-color: rgba(192, 21, 47, 0.9);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  font-size: 12px;
-  font-weight: bold;
+  font-size: 0.9rem;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all var(--duration-fast);
+  opacity: 0;
+}
+
+.photo-preview-item:hover .btn-remove-preview {
+  opacity: 1;
 }
 
 .btn-remove-preview:hover {
-  background-color: darken(var(--accent-red), 10%);
+  background-color: rgba(192, 21, 47, 1);
   transform: scale(1.1);
 }
 
-.players-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 1.5rem;
+/* Существующие фото в режиме редактирования */
+.existing-photos {
+  margin-top: 1.5rem;
 }
 
-.player-card {
-  border-color: var(--border-color);
-  transition: all var(--duration-normal);
-}
-
-.player-card:hover {
-  border-color: var(--accent-gold);
-  box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
-}
-
-.player-view,
-.player-edit {
-  color: var(--text-primary);
-}
-
-.player-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 1rem;
-  gap: 1rem;
-}
-
-.player-info h3 {
-  margin: 0;
+.existing-photos h4 {
   color: var(--accent-gold);
-  font-size: 1.3rem;
-}
-
-.photo-count {
-  display: block;
-  color: var(--text-muted);
-  font-size: 0.85rem;
-  margin-top: 0.25rem;
-}
-
-.player-actions {
-  display: flex;
-  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
 }
 
 .player-photos-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
   gap: 0.75rem;
   margin-bottom: 1rem;
 }
 
 .photo-item {
+  position: relative;
+  width: 100px;
+  height: 100px;
   border-radius: var(--radius-md);
   overflow: hidden;
   border: 1px solid var(--border-color);
-  aspect-ratio: 3/4;
+  transition: all var(--duration-fast);
 }
 
 .photo-item img {
@@ -153,18 +132,19 @@
   object-fit: cover;
 }
 
+.photo-item:hover {
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+}
+
 .photo-item-editable {
   position: relative;
+  width: 100px;
+  height: 100px;
   border-radius: var(--radius-md);
   overflow: hidden;
   border: 1px solid var(--border-color);
-  aspect-ratio: 3/4;
-  transition: all var(--duration-normal);
-}
-
-.photo-item-editable:hover {
-  border-color: var(--accent-gold);
-  box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+  transition: all var(--duration-fast);
 }
 
 .photo-item-editable img {
@@ -173,18 +153,24 @@
   object-fit: cover;
 }
 
+.photo-item-editable:hover {
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+}
+
 .btn-delete-photo {
   position: absolute;
-  bottom: 4px;
-  right: 4px;
-  background-color: var(--accent-red);
+  top: 2px;
+  right: 2px;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  background-color: rgba(192, 21, 47, 0.9);
   color: white;
   border: none;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  font-size: 16px;
+  font-size: 0.9rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -197,16 +183,22 @@
 }
 
 .btn-delete-photo:hover {
-  background-color: darken(var(--accent-red), 10%);
+  background-color: rgba(192, 21, 47, 1);
   transform: scale(1.1);
 }
 
 .empty-photos {
+  padding: 1rem;
   text-align: center;
-  padding: 1.5rem;
   color: var(--text-muted);
-  background-color: var(--bg-tertiary);
+  background-color: var(--bg-secondary);
+  border: 1px dashed var(--border-color);
   border-radius: var(--radius-md);
+  font-size: 0.9rem;
+}
+
+.empty-photos p {
+  margin: 0;
 }
 
 .existing-photos {

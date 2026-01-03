@@ -6,7 +6,7 @@
   --bg-tertiary: #252525;
   
   /* Золотой акцент - как в оригинальной игре */
-  --accent-gold: #d4af37;
+  --accent-gold: #f4cc49;
   --accent-gold-hover: #e5c158;
   --accent-gold-dark: #b8960f;
   
@@ -49,6 +49,7 @@ html {
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  
 }
 
 body {
@@ -56,6 +57,18 @@ body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   line-height: 1.5;
+}
+
+html {
+  background-image: url('/img/bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
+body {
+  background: transparent;
 }
 
 /* Скроллбар */

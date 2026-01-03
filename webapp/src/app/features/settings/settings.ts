@@ -23,6 +23,7 @@ export class Settings implements OnInit, OnDestroy {
   editingPlayerId: string | null = null;
   editingPlayerName = '';
   editingPlayerCity = '';
+  editingPlayerQuestionCount = 0;
   editingPlayerPhotoFiles: File[] = [];
   editingPlayerPhotosPreviews: string[] = [];
   
@@ -161,6 +162,7 @@ export class Settings implements OnInit, OnDestroy {
     this.editingPlayerId = player.id;
     this.editingPlayerName = player.name;
     this.editingPlayerCity = player.city;
+    this.editingPlayerQuestionCount = player.questionCount;
     this.editingPlayerPhotoFiles = [];
     this.editingPlayerPhotosPreviews = [];
   }
@@ -170,6 +172,7 @@ export class Settings implements OnInit, OnDestroy {
     this.editingPlayerId = null;
     this.editingPlayerName = '';
     this.editingPlayerCity = '';
+    this.editingPlayerQuestionCount = 0;
     this.editingPlayerPhotoFiles = [];
     this.editingPlayerPhotosPreviews = [];
   }
@@ -206,7 +209,8 @@ export class Settings implements OnInit, OnDestroy {
       this.editingPlayerId,
       this.editingPlayerName,
       this.editingPlayerCity,
-      newPhotoIds
+      newPhotoIds,
+      this.editingPlayerQuestionCount
     );
 
     this.cancelEditPlayer();
@@ -245,7 +249,13 @@ export class Settings implements OnInit, OnDestroy {
         const player = this.players.find(p => p.id === playerId);
         if (player && player.photoIds && Array.isArray(player.photoIds)) {
           const newPhotoIds = player.photoIds.filter(id => id !== photoId);
-          this.gameStateService.updatePlayer(playerId, player.name, player.city, newPhotoIds);
+          this.gameStateService.updatePlayer(
+            playerId, 
+            player.name, 
+            player.city, 
+            newPhotoIds,
+            player.questionCount
+          );
         }
 
         if (this.playerPhotoUrls[photoId]) {
@@ -272,6 +282,7 @@ export class Settings implements OnInit, OnDestroy {
       this.editingPlayerId = null;
       this.editingPlayerName = '';
       this.editingPlayerCity = '';
+      this.editingPlayerQuestionCount = 0;
       this.editingPlayerPhotoFiles = [];
       this.editingPlayerPhotosPreviews = [];
     }
@@ -285,7 +296,12 @@ export class Settings implements OnInit, OnDestroy {
     }
 
     // Сначала добавляем игрока БЕЗ фото
-    this.gameStateService.addPlayer(this.editingPlayerName, this.editingPlayerCity, []);
+    this.gameStateService.addPlayer(
+      this.editingPlayerName, 
+      this.editingPlayerCity, 
+      [],
+      this.editingPlayerQuestionCount
+    );
     
     // Получаем ID только что добавленного игрока
     const addedPlayer = this.gameStateService.getGameState().players.slice(-1)[0];
@@ -310,11 +326,18 @@ export class Settings implements OnInit, OnDestroy {
     }
 
     // Обновляем игрока с фото
-    this.gameStateService.updatePlayer(playerId, this.editingPlayerName, this.editingPlayerCity, photoIds);
+    this.gameStateService.updatePlayer(
+      playerId, 
+      this.editingPlayerName, 
+      this.editingPlayerCity, 
+      photoIds,
+      this.editingPlayerQuestionCount
+    );
 
     // Очищаем форму
     this.editingPlayerName = '';
     this.editingPlayerCity = '';
+    this.editingPlayerQuestionCount = 0;
     this.editingPlayerPhotoFiles = [];
     this.editingPlayerPhotosPreviews = [];
     this.showAddPlayer = false;
