@@ -1,0 +1,210 @@
+<div class="settings-container">
+  <h1>⚙️ Настройки игры</h1>
+
+  <!-- Раздел добавления игрока -->
+  <div class="settings-section">
+    <div class="section-header">
+      <h2>Игроки</h2>
+      <button class="btn btn-primary" (click)="toggleAddPlayer()">
+        {{ showAddPlayer ? '✕ Отмена' : '+ Добавить игрока' }}
+      </button>
+    </div>
+
+    <!-- Форма добавления игрока -->
+    <div *ngIf="showAddPlayer" class="add-player-form card">
+      <div class="form-group">
+        <label class="form-label">Имя игрока</label>
+        <input 
+          type="text" 
+          class="form-control" 
+          [(ngModel)]="editingPlayerName"
+          placeholder="Введите имя"
+        >
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Город</label>
+        <input 
+          type="text" 
+          class="form-control" 
+          [(ngModel)]="editingPlayerCity"
+          placeholder="Введите город"
+        >
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Фото игрока (можно выбрать несколько)</label>
+        <input 
+          type="file" 
+          class="form-control file-input" 
+          (change)="onPhotoSelected($event)"
+          accept="image/*"
+          multiple
+        >
+      </div>
+
+      <!-- Превью фото -->
+      <div *ngIf="editingPlayerPhotosPreviews.length > 0" class="photos-preview-grid">
+        <div *ngFor="let preview of editingPlayerPhotosPreviews; let i = index" class="photo-preview-item">
+          <img [src]="preview" alt="Превью фото">
+          <button 
+            type="button"
+            class="btn-remove-preview" 
+            (click)="removePhotoPreview(i)"
+            title="Удалить это фото"
+          >
+            ✕
+          </button>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" (click)="onAddPlayer()">
+        Добавить игрока
+      </button>
+    </div>
+
+    <!-- Список игроков -->
+    <div class="players-list">
+      <div *ngIf="players.length === 0" class="empty-state">
+        <p>Игроков пока нет. Добавьте первого игрока!</p>
+      </div>
+
+      <div *ngFor="let player of players" class="player-card card">
+        <!-- Просмотр игрока -->
+        <div *ngIf="!isEditing(player.id)" class="player-view">
+          <div class="player-header">
+            <div class="player-info">
+              <h3>{{ player.name }}</h3>
+              <span class="player-city">{{ player.city }}</span>
+              <span class="photo-count">{{ player.photoIds?.length || 0 }} фото</span>
+            </div>
+            <div class="player-actions">
+              <button 
+                class="btn btn-secondary btn-sm" 
+                (click)="startEditPlayer(player)"
+                title="Редактировать игрока"
+              >
+                ✎️
+              </button>
+              <button 
+                class="btn btn-outline btn-sm" 
+                (click)="onDeletePlayer(player.id)"
+                title="Удалить игрока"
+              >
+                🗑️
+              </button>
+            </div>
+          </div>
+
+          <!-- Фото в режиме просмотра -->
+          <div *ngIf="player.photoIds && player.photoIds.length > 0" class="player-photos-grid">
+            <div *ngFor="let photoId of player.photoIds" class="photo-item">
+              <img [src]="playerPhotoUrls[photoId]" alt="Фото игрока">
+            </div>
+          </div>
+
+          <div *ngIf="!player.photoIds || player.photoIds.length === 0" class="empty-photos">
+            <p>Фото не загружены</p>
+          </div>
+        </div>
+
+        <!-- Редактирование игрока -->
+        <div *ngIf="isEditing(player.id)" class="player-edit">
+          <div class="form-group">
+            <label class="form-label">Имя игрока</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              [(ngModel)]="editingPlayerName"
+            >
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Город</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              [(ngModel)]="editingPlayerCity"
+            >
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Добавить новые фото</label>
+            <input 
+              type="file" 
+              class="form-control file-input" 
+              (change)="onPhotoSelected($event)"
+              accept="image/*"
+              multiple
+            >
+          </div>
+
+          <!-- Превью новых фото -->
+          <div *ngIf="editingPlayerPhotosPreviews.length > 0" class="photos-preview-grid">
+            <div *ngFor="let preview of editingPlayerPhotosPreviews; let i = index" class="photo-preview-item">
+              <img [src]="preview" alt="Превью фото">
+              <button 
+                type="button"
+                class="btn-remove-preview" 
+                (click)="removePhotoPreview(i)"
+              >
+                ✕
+              </button>
+            </div>
+          </div>
+
+          <!-- Существующие фото -->
+          <div *ngIf="getPlayerPhotos(player.id).length > 0" class="existing-photos">
+            <h4>Загруженные фото:</h4>
+            <div class="player-photos-grid">
+              <div *ngFor="let photo of getPlayerPhotos(player.id)" class="photo-item-editable">
+                <img [src]="playerPhotoUrls[photo.photoId]" alt="Фото игрока">
+                <button 
+                  class="btn-delete-photo" 
+                  (click)="deletePhoto(player.id, photo.photoId)"
+                  title="Удалить фото"
+                >
+                  🗑️
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Кнопки редактирования -->
+          <div class="edit-actions">
+            <button class="btn btn-primary" (click)="saveEditPlayer()">
+              💾 Сохранить
+            </button>
+            <button class="btn btn-secondary" (click)="cancelEditPlayer()">
+              Отмена
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Раздел информации -->
+  <div class="settings-section">
+    <h2>ℹ️ Информация</h2>
+    <div class="info-card card">
+      <h3>Как играть:</h3>
+      <ol>
+        <li>Каждый игрок заранее приготавливает <strong>несколько вопросов</strong> для знатоков (вне этого приложения)</li>
+        <li>Каждый загружает свои <strong>забавные фото</strong> в приложение (можно несколько)</li>
+        <li>Во время игры ведущий вращает "рулетку" (барабан)</li>
+        <li>Выбранный игрок становится телезрителем и задает свой вопрос</li>
+        <li>Остальные игроки (знатоки) совещаются и дают ответ</li>
+        <li>За правильный ответ получают 1 очко</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- Раздел управления -->
+  <div class="settings-section">
+    <h2>🎮 Управление</h2>
+    <button class="btn btn-outline" (click)="onResetGame()">
+      🔄 Сбросить игру и всех игроков
+    </button>
+  </div>
+</div>

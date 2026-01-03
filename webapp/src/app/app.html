@@ -1,0 +1,13 @@
+<nav class="navbar">
+  <div class="navbar-container">
+    <h1 class="navbar-title">Что? Где? Когда?</h1>
+    <div class="navbar-links">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Главная</a>
+      <a routerLink="/settings" routerLinkActive="active">Настройки</a>
+    </div>
+  </div>
+</nav>
+
+<main class="main-content">
+  <router-outlet></router-outlet>
+</main>

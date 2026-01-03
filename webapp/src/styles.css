@@ -1,0 +1,314 @@
+/* Глобальные переменные - стиль ЧтоГдеКогда */
+:root {
+  /* Основные цвета - элегантный тёмный фон */
+  --bg-primary: #0f0f0f;
+  --bg-secondary: #1a1a1a;
+  --bg-tertiary: #252525;
+  
+  /* Золотой акцент - как в оригинальной игре */
+  --accent-gold: #d4af37;
+  --accent-gold-hover: #e5c158;
+  --accent-gold-dark: #b8960f;
+  
+  /* Красный акцент для вторичных элементов */
+  --accent-red: #c41f3f;
+  
+  /* Текст */
+  --text-primary: #ffffff;
+  --text-secondary: #c0c0c0;
+  --text-muted: #808080;
+  
+  /* Границы */
+  --border-color: rgba(212, 175, 55, 0.3);
+  --border-color-light: rgba(192, 192, 192, 0.15);
+  
+  /* Тени - глубокие для объёма */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.7);
+  --shadow-gold: 0 0 20px rgba(212, 175, 55, 0.3);
+  
+  /* Размеры */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  
+  /* Анимации */
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+
+/* Скроллбар */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent-gold);
+  border-radius: var(--radius-md);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-gold-hover);
+}
+
+/* Основные элементы */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+
+h1 {
+  font-size: 2.5rem;
+  color: var(--accent-gold);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+h2 {
+  font-size: 2rem;
+  color: var(--accent-gold);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+h3 {
+  font-size: 1.5rem;
+  color: var(--text-primary);
+}
+
+p {
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+a {
+  color: var(--accent-gold);
+  text-decoration: none;
+  transition: color var(--duration-fast) var(--ease);
+}
+
+a:hover {
+  color: var(--accent-gold-hover);
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+}
+
+/* Кнопки - ИСПРАВЛЕНЫ */
+.btn {
+  padding: 0.75rem 1.5rem;
+  border: 2px solid var(--accent-gold);
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  background-color: transparent;
+  color: var(--accent-gold);
+  text-shadow: none;
+}
+
+.btn:focus {
+  outline: 2px solid var(--accent-gold);
+  outline-offset: 2px;
+}
+
+.btn:hover {
+  background-color: rgba(212, 175, 55, 0.1);
+  border-color: var(--accent-gold-hover);
+  color: var(--accent-gold-hover);
+  box-shadow: var(--shadow-gold);
+}
+
+.btn:active {
+  transform: scale(0.95);
+}
+
+/* Первичная кнопка */
+.btn-primary {
+  background-color: var(--accent-gold);
+  color: var(--bg-primary);
+  border-color: var(--accent-gold);
+  font-weight: 600;
+  text-shadow: none;
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-gold-hover);
+  border-color: var(--accent-gold-hover);
+  color: var(--bg-primary);
+  box-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
+}
+
+/* Вторичная кнопка */
+.btn-secondary {
+  background-color: transparent;
+  color: var(--accent-gold);
+  border: 2px solid var(--accent-gold);
+}
+
+.btn-secondary:hover {
+  background-color: rgba(212, 175, 55, 0.15);
+  border-color: var(--accent-gold-hover);
+  color: var(--accent-gold-hover);
+}
+
+/* Outline кнопка */
+.btn-outline {
+  background-color: transparent;
+  color: var(--accent-gold);
+  border: 2px solid var(--accent-gold);
+}
+
+.btn-outline:hover {
+  background-color: rgba(212, 175, 55, 0.1);
+  border-color: var(--accent-gold-hover);
+  color: var(--accent-gold-hover);
+  box-shadow: var(--shadow-gold);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  color: var(--text-muted);
+  border-color: var(--text-muted);
+}
+
+/* Форма */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--accent-gold);
+  font-size: 0.95rem;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-family: inherit;
+  transition: all var(--duration-fast) var(--ease);
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--accent-gold);
+  background-color: rgba(212, 175, 55, 0.05);
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+}
+
+.form-control::placeholder {
+  color: var(--text-muted);
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 100px;
+}
+
+select.form-control {
+  cursor: pointer;
+}
+
+/* Карточка */
+.card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--duration-normal) var(--ease);
+}
+
+.card:hover {
+  border-color: var(--accent-gold);
+  box-shadow: var(--shadow-md), 0 0 15px rgba(212, 175, 55, 0.2);
+}
+
+/* Контейнер */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Утилиты */
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.gap-1 { gap: 0.5rem; }
+.gap-2 { gap: 1rem; }
+.gap-3 { gap: 1.5rem; }
+.gap-4 { gap: 2rem; }
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.mt-2 { margin-top: 1rem; }
+.mt-4 { margin-top: 2rem; }
+.mb-2 { margin-bottom: 1rem; }
+.mb-4 { margin-bottom: 2rem; }
+
+.text-center {
+  text-align: center;
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+
+.text-gold {
+  color: var(--accent-gold);
+}
